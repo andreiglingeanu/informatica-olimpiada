@@ -1,7 +1,8 @@
 program caractere;
 type sirChar = array[1..MaxInt] of char;
 var sir : sirChar;
-    paranteze, acolade, parPatrate, j, i, n : integer;
+    paranteze_a, paranteze_b, acolade_a, acolade_b,
+    parPatrate_a, parPatrate_b, j, i, n : integer;
 label corect, incorect, 3;
 
 procedure printeaza_sirul(var sir : sirChar; n : integer);
@@ -11,9 +12,12 @@ begin
         write(sir[i]);
 end;
 begin
-    paranteze  := 0;
-    acolade    := 0;
-    parPatrate := 0;
+    paranteze_a  := 0;
+    paranteze_b  := 0;
+    acolade_a    := 0;
+    acolade_b    := 0;
+    parPatrate_a := 0;
+    parPatrate_b := 0;
 
     write('introduceti n = '); readln(n);
 
@@ -24,16 +28,23 @@ begin
         goto incorect;
 
     for i := 1 to n do
-        if sir[i] = '(' or sir[i] = ')' then
-            paranteze := paranteze + 1;
-    for i := 1 to n do
-        if sir[i] = '[' or sir[i] = ']' then
-            parPatrate := parPatrate + 1;
-    for i := 1 to n do
-        if sir[i] = '{' or sir[i] = '}' then
-            acolade := acolade + 1;
+        begin
+            case sir[i] of
+                '(': paranteze_a := paranteze_a + 1;
+                ')': paranteze_b := paranteze_b + 1;
+                '[': parPatrate_a := parPatrate_a + 1;
+                ']': parPatrate_b := parPatrate_b + 1;
+                '{': acolade_a := acolade_a + 1;
+                '}': acolade_b := acolade_b + 1;
+            end;
+        end;
 
-corect: write('sirul este corect '); printeaza_sirul(sir, n); goto 3;
+    if (paranteze_a  <> paranteze_b)  or
+       (acolade_a    <> acolade_b)    or
+       (parPatrate_a <> parPatrate_b) then
+        goto incorect;
+
+corect: write('sirul este corect ');     printeaza_sirul(sir, n); goto 3;
 incorect: write('sirul este incorect '); printeaza_sirul(sir, n);
 3:
 end.
